@@ -2,6 +2,12 @@ import React, { useState, useRef,   useEffect } from "react";
 import { StyleSheet, Text, Keyboard, TouchableOpacity, View, TouchableWithoutFeedback } from "react-native";
 import { Button, Input } from "react-native-elements";
 import { Feather } from "@expo/vector-icons";
+import {
+ storeGeocalcItem,
+ writeData,
+ setupDataListener,
+ initRemindersDB,
+} from "../helpers/fb-geocalculator";
 
 const CalculatorScreen = ({ route, navigation }) => {
   const [state, setState] = useState({
@@ -14,6 +20,11 @@ const CalculatorScreen = ({ route, navigation }) => {
   });
   const [bearingUnits, setBearingUnits] = useState("Degrees");
   const [distanceUnits, setDistanceUnits] = useState("Kilometers");
+ // const timeStamp = new Date('December 17, 1995 03:24:00');
+  const timeStamp = new Date().toISOString;
+  //const [data, setData] = useState({id: "", timeStamp : "", val: ""});
+
+  const [data, setData] = useState([]);
 
   const initialField = useRef(null);
 
@@ -24,6 +35,27 @@ const CalculatorScreen = ({ route, navigation }) => {
       doCalculation(route.params.selectedDistanceUnits, route.params.selectedBearingUnits);
     }
   }, [route.params?.selectedDistanceUnits]);
+
+  useEffect(() => {
+    try {
+      initRemindersDB();
+    } catch (err) {
+      console.log(err);
+    }
+    setupDataListener((items) => {
+       setData(items);
+    });
+  }, []);
+
+ // console.log(data);
+
+  useEffect(() => {
+    if (route.params?.tappedValues) {
+      let vals = route.params.tappedValues;
+      console.log(vals);
+      setState ({...state, ...vals})
+    }
+  },  [route.params?.tappedValues]);
 
   // Converts from degrees to radians.
   function toRadians(degrees) {
@@ -106,7 +138,9 @@ const CalculatorScreen = ({ route, navigation }) => {
         distance: `${round(dist*dConv,3)} ${dUnits}`,
         bearing: `${round(bear*bConv, 3)} ${bUnits}`,
       });
-    }
+    };
+    
+    storeGeocalcItem({vals: `${p1.lat},${p1.lon}End:${p2.lat},${p2.lon}`, timeStamp: "Tue May 24"})
   }
 
   const updateStateObject = (vals) => {
@@ -127,6 +161,20 @@ const CalculatorScreen = ({ route, navigation }) => {
         }
       >
         <Feather style={{ marginRight: 10 }} name="settings" size={24} color='#fff' />
+      </TouchableOpacity>
+    ),
+
+    headerLeft: () => (
+      <TouchableOpacity
+        onPress={() => {
+          // navigate back with new settings.
+          console.log(data);
+          navigation.navigate('History', {
+           currHistory: data
+          });
+        }}
+      >
+        <Text style={styles.headerButton}> History </Text>
       </TouchableOpacity>
     ),
   });
@@ -254,6 +302,11 @@ const styles = StyleSheet.create({
     fontSize: 20,
     flex: 1,
     padding: 10,
+  },
+  headerButton: {
+    color: "#fff",
+    fontWeight: 'bold',
+    marginLeft: 10,
   },
 });
 

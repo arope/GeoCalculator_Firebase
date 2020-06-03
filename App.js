@@ -4,6 +4,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import CalculatorScreen from './screens/CalculatorScreen';
 import SettingsScreen from './screens/SettingsScreen';
+import HistoryScreen from './screens/HistoryScreen'
 
 const Stack = createStackNavigator();
 
@@ -14,6 +15,7 @@ export default function App() {
         <Stack.Navigator screenOptions={navStyling}>
           <Stack.Screen name="Geo Calculator" component={CalculatorScreen} />
           <Stack.Screen name="Settings" component={SettingsScreen} />
+          <Stack.Screen name="History" component={HistoryScreen} />
         </Stack.Navigator>
       </NavigationContainer>
   );
