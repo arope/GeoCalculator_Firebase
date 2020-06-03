@@ -8,6 +8,7 @@ import {
  setupDataListener,
  initRemindersDB,
 } from "../helpers/fb-geocalculator";
+import moment from 'moment';
 
 const CalculatorScreen = ({ route, navigation }) => {
   const [state, setState] = useState({
@@ -20,9 +21,8 @@ const CalculatorScreen = ({ route, navigation }) => {
   });
   const [bearingUnits, setBearingUnits] = useState("Degrees");
   const [distanceUnits, setDistanceUnits] = useState("Kilometers");
- // const timeStamp = new Date('December 17, 1995 03:24:00');
-  const timeStamp = new Date().toISOString;
-  //const [data, setData] = useState({id: "", timeStamp : "", val: ""});
+  const timeStamp = moment().format("MMM Do YY"); 
+  
 
   const [data, setData] = useState([]);
 
@@ -140,7 +140,7 @@ const CalculatorScreen = ({ route, navigation }) => {
       });
     };
     
-    storeGeocalcItem({vals: `${p1.lat},${p1.lon}End:${p2.lat},${p2.lon}`, timeStamp: "Tue May 24"})
+    storeGeocalcItem({vals: `${p1.lat},${p1.lon}End:${p2.lat},${p2.lon}`, timeStamp: timeStamp})
   }
 
   const updateStateObject = (vals) => {
