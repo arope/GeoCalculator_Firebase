@@ -65,7 +65,6 @@ const HistoryScreen = ({ route, navigation }) => {
       key={item.id}
       onPress={() => {stringBreaker((item["val"]), (values) => {
        //  setVals({values})
-        // console.log(values); 
          navigation.navigate('Geo Calculator', {tappedValues: values});
       })
     }}

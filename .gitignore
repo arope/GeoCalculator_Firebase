@@ -1,4 +1,5 @@
 fb-credentials.js
+CALC_KEY.js
 node_modules/**/*
 .expo/*
 npm-debug.*

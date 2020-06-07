@@ -1,6 +1,6 @@
-import React, { useState, useRef,   useEffect } from "react";
+import React, { useState, useRef,   useEffect, useCallback } from "react";
 import { StyleSheet, Text, Keyboard, TouchableOpacity, View, TouchableWithoutFeedback } from "react-native";
-import { Button, Input } from "react-native-elements";
+import { Button, Input, Image } from "react-native-elements";
 import { Feather } from "@expo/vector-icons";
 import {
  storeGeocalcItem,
@@ -9,6 +9,27 @@ import {
  initRemindersDB,
 } from "../helpers/fb-geocalculator";
 import moment from 'moment';
+import { getWeather } from '../api/CalcServer';
+
+const ICONS = {
+  img01d: require('../assets/img01d.png'),
+  img01n: require('../assets/img01n.png'),
+  img02d: require('../assets/img02d.png'),
+  img02n: require('../assets/img02n.png'),
+  img03d: require('../assets/img03d.png'),
+  img03n: require('../assets/img03n.png'),
+  img04d: require('../assets/img04d.png'),
+  img04n: require('../assets/img04n.png'),
+  img09d: require('../assets/img09d.png'),
+  img09n: require('../assets/img09n.png'),
+  img10d: require('../assets/img10d.png'),
+  img10n: require('../assets/img10n.png'),
+  img13d: require('../assets/img13d.png'),
+  img13n: require('../assets/img13n.png'),
+  img50d: require('../assets/img13d.png'),
+  img50n: require('../assets/img13n.png'),
+ };
+
 
 const CalculatorScreen = ({ route, navigation }) => {
   const [state, setState] = useState({
@@ -25,6 +46,7 @@ const CalculatorScreen = ({ route, navigation }) => {
   
 
   const [data, setData] = useState([]);
+  const [weather, setWeather] = useState([]);
 
   const initialField = useRef(null);
 
@@ -45,14 +67,24 @@ const CalculatorScreen = ({ route, navigation }) => {
     setupDataListener((items) => {
        setData(items);
     });
+   getWeather((data) => {
+    // console.log('received: ', data);
+    setWeather(data.weather);
+   });
   }, []);
 
- // console.log(data);
+  // function forceUpdate() {
+  //   const [, setTick] = useState(0);
+  //   const update = useCallback(() => {
+  //     setTick(tick => tick + 1);
+  //   }, [])
+  //   return update;
+  // }
+
 
   useEffect(() => {
     if (route.params?.tappedValues) {
       let vals = route.params.tappedValues;
-      console.log(vals);
       setState ({...state, ...vals})
     }
   },  [route.params?.tappedValues]);
@@ -119,6 +151,7 @@ const CalculatorScreen = ({ route, navigation }) => {
     }
   }
 
+
   function doCalculation(dUnits,bUnits) {
     if (formValid(state)) {
       var p1 = {
@@ -139,7 +172,7 @@ const CalculatorScreen = ({ route, navigation }) => {
         bearing: `${round(bear*bConv, 3)} ${bUnits}`,
       });
     };
-    
+    renderWeather(weather);
     storeGeocalcItem({vals: `${p1.lat},${p1.lon}End:${p2.lat},${p2.lon}`, timeStamp: timeStamp})
   }
 
@@ -168,7 +201,6 @@ const CalculatorScreen = ({ route, navigation }) => {
       <TouchableOpacity
         onPress={() => {
           // navigate back with new settings.
-          console.log(data);
           navigation.navigate('History', {
            currHistory: data
           });
@@ -178,6 +210,31 @@ const CalculatorScreen = ({ route, navigation }) => {
       </TouchableOpacity>
     ),
   });
+
+  const renderWeather = (weather) => {
+    if (weather.icon === '') {
+      console.log("No Icon");
+  //    forceUpdate();
+      return <View></View>;
+    } else {
+      console.log(weather.icon);
+     // forceUpdate();
+      return (
+        <View style={styles.weatherView}>
+          <Image
+            style={{ width: 100, height: 100 }}
+            source={ICONS['img' + weather.icon]}
+          />
+          <View>
+            <Text style={{ fontSize: 56, fontWeight: 'bold' }}>
+             {round(weather.temperature,0)}
+            </Text>
+            <Text> {weather.description} </Text>
+          </View>
+        </View>
+      );
+    }
+  };
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -308,6 +365,9 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginLeft: 10,
   },
+  weatherView: {
+    flex: 1
+  }
 });
 
 export default CalculatorScreen;
