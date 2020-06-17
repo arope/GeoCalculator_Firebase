@@ -2,11 +2,14 @@ import React, { useState } from "react";
 import { StyleSheet, View, TouchableOpacity, Text } from "react-native";
 import { Dropdown } from "react-native-material-dropdown";
 
-
 const SettingsScreen = ({ route, navigation }) => {
-  const {defaultDistanceUnits, defaultBearingUnits} = route.params;
-  const [selectedDistanceUnits, setSelectedDistanceUnits] = useState(defaultDistanceUnits);
-  const [selectedBearingUnits, setSelectedBearingUnits] = useState(defaultBearingUnits);
+  const { defaultDistanceUnits, defaultBearingUnits } = route.params;
+  const [selectedDistanceUnits, setSelectedDistanceUnits] = useState(
+    defaultDistanceUnits
+  );
+  const [selectedBearingUnits, setSelectedBearingUnits] = useState(
+    defaultBearingUnits
+  );
 
   const distanceUnits = [
     {
@@ -28,7 +31,7 @@ const SettingsScreen = ({ route, navigation }) => {
 
   navigation.setOptions({
     headerRight: () => (
-      <TouchableOpacity onPress={() => navigation.navigate('Geo Calculator')}>
+      <TouchableOpacity onPress={() => navigation.navigate("Geo Calculator")}>
         <Text style={styles.headerButton}> Cancel </Text>
       </TouchableOpacity>
     ),
@@ -36,7 +39,7 @@ const SettingsScreen = ({ route, navigation }) => {
       <TouchableOpacity
         onPress={() => {
           // navigate back with new settings.
-          navigation.navigate('Geo Calculator', {
+          navigation.navigate("Geo Calculator", {
             selectedDistanceUnits,
             selectedBearingUnits,
           });
@@ -50,21 +53,21 @@ const SettingsScreen = ({ route, navigation }) => {
   return (
     <View style={styles.screen}>
       <View style={styles.container}>
-          <View >
-            <Dropdown
-              value={selectedDistanceUnits}
-              onChangeText={(text) => setSelectedDistanceUnits(text)}
-              label="Distance Units"
-              data={distanceUnits}
-            />
-          </View>
-          <View>
-            <Dropdown
-              value={selectedBearingUnits}
-              onChangeText={(text) => setSelectedBearingUnits(text)}
-              label="Bearing Units"
-              data={bearingUnits}
-            />
+        <View>
+          <Dropdown
+            value={selectedDistanceUnits}
+            onChangeText={(text) => setSelectedDistanceUnits(text)}
+            label="Distance Units"
+            data={distanceUnits}
+          />
+        </View>
+        <View>
+          <Dropdown
+            value={selectedBearingUnits}
+            onChangeText={(text) => setSelectedBearingUnits(text)}
+            label="Bearing Units"
+            data={bearingUnits}
+          />
         </View>
       </View>
     </View>
@@ -72,22 +75,21 @@ const SettingsScreen = ({ route, navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  screen: {
-    flex: 1,
-    padding: 4,
-    paddingTop: 10,
-    backgroundColor: "#E8EAF6",
-  },
   container: {
     marginHorizontal: 4,
     marginVertical: 8,
     paddingHorizontal: 8,
   },
   headerButton: {
-    color: '#fff',
-    fontWeight: 'bold',
+    color: "#fff",
+    fontWeight: "bold",
   },
-
+  screen: {
+    flex: 1,
+    padding: 4,
+    paddingTop: 10,
+    backgroundColor: "#E8EAF6",
+  },
 });
 
 export default SettingsScreen;

@@ -112,12 +112,6 @@ const HistoryScreen = ({ route, navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  screen: {
-    flex: 1,
-    padding: 4,
-    paddingTop: 10,
-    backgroundColor: "#E8EAF6",
-  },
   container: {
     marginHorizontal: 4,
     marginVertical: 8,
@@ -132,14 +126,11 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: Constants.statusBarHeight,
   },
-  item: {
-    //  backgroundColor: '#f9c2ff',
-    // marginTop: 20,
-    // marginVertical: 8,
-    // marginHorizontal: 16,
-  },
-  title: {
-    fontSize: 24,
+  screen: {
+    flex: 1,
+    padding: 4,
+    paddingTop: 10,
+    backgroundColor: "#E8EAF6",
   },
   separator: {
     flex: 1,
@@ -150,6 +141,9 @@ const styles = StyleSheet.create({
     flex: 1,
     marginRight: 10,
     alignSelf: "flex-end",
+  },
+  title: {
+    fontSize: 24,
   },
 });
 

@@ -254,8 +254,6 @@ const CalculatorScreen = ({ route, navigation }) => {
     ),
   });
 
-  // console.log(weather);
-
   const renderWeather = (weather) => {
     if (weather.icon === "") {
       console.log("No Icon");
@@ -375,33 +373,38 @@ const CalculatorScreen = ({ route, navigation }) => {
 };
 
 const styles = StyleSheet.create({
+  buttons: {
+    padding: 10,
+  },
   container: {
     padding: 10,
     backgroundColor: "#E8EAF6",
     flex: 1,
   },
-  buttons: {
+  headerButton: {
+    color: "#fff",
+    fontWeight: "bold",
+    marginLeft: 10,
+  },
+  input: {
     padding: 10,
   },
   inputError: {
     color: "red",
   },
-  input: {
-    padding: 10,
-  },
   resultsGrid: {
     borderColor: "#000",
     borderWidth: 1,
-  },
-  resultsRow: {
-    flexDirection: "row",
-    borderColor: "#000",
-    borderBottomWidth: 1,
   },
   resultsLabelContainer: {
     borderRightWidth: 1,
     borderRightColor: "#000",
     flex: 1,
+  },
+  resultsRow: {
+    flexDirection: "row",
+    borderColor: "#000",
+    borderBottomWidth: 1,
   },
   resultsLabelText: {
     fontWeight: "bold",
@@ -413,11 +416,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     flex: 1,
     padding: 10,
-  },
-  headerButton: {
-    color: "#fff",
-    fontWeight: "bold",
-    marginLeft: 10,
   },
   weatherView: {
     backgroundColor: "lightblue",
